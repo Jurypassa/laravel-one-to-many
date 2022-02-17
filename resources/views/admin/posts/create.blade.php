@@ -20,7 +20,19 @@
                         <div class="form-group">
                             <label for="content">Contenuto</label>
                             <textarea class="form-control @error('content') is-invalid @enderror" id="content" name="content" placeholder="Inserisci il contenuto del post">{{old("content")}}</textarea>
-                            @error('content')
+                            
+                        </div>@error('content')
+                            <div class="alert alert-danger">{{ $message }}</div>
+                            @enderror
+                        <div class="form-group">
+                            <label for="category">Categoria</label>
+                            <select class="custom-select @error('content') is-invalid @enderror" name="category_id" id="category_id">
+                                <option value="">Seleziona una categoria</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{$category->id}}" {{old("category_id") == $category->id ? "selected" : ""}}>{{$category->name}}</option>
+                                @endforeach
+                            </select>
+                            @error('category_id')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
                         </div>

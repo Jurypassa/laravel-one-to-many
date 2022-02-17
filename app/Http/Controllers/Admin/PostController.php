@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-
+use App\Category;
 use App\Post;
 
 class PostController extends Controller
@@ -29,7 +29,8 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view("admin.posts.create");
+        $categories = Category::all();
+        return view("admin.posts.create", compact("categories"));
     }
 
     /**
@@ -43,7 +44,8 @@ class PostController extends Controller
         $request->validate([
             "title"=>"required|string|max:100",
             "content"=>"required|",
-            "published"=>"sometimes|accepted"
+            "published"=>"sometimes|accepted",
+            "category_id"=>"nullable|exists:categories,id"
         ]);
 
         $data = $request->all();
@@ -54,6 +56,7 @@ class PostController extends Controller
         if (isset($data["published"])) {
             $newPost->published = true;
         }
+        $newPost->category_id = $data["category_id"];
 
         $slug = Str::of($newPost->title)->slug("-");
         $count = 1;
@@ -89,7 +92,8 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view("admin.posts.edit", compact("post"));
+        $categories = Category::all();
+        return view("admin.posts.edit", compact("post", "categories"));
     }
 
     /**
@@ -127,7 +131,9 @@ class PostController extends Controller
         }
 
         $post->content = $data["content"];
+        $post->category_id = $data["category_id"];
         $post->published = isset($data["published"]);
+        
 
         $post->save();
 

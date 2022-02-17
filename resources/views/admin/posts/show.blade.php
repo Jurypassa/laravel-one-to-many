@@ -16,8 +16,16 @@
                         <span class="badge badge-pill badge-secondary">Bozza</span>   
                         @endif
                     </div>
+                    @if($post->category)
+                        <div class="mb-2">
+                            <strong>Categoria:</strong>
+                            {{$post->category->name}}
+                        </div>
+                    @endif
                     {{$post->content}}
-                    <a href="{{route("posts.edit", $post->id)}}"><button type="button" class="btn btn-warning">Modifica</button></a>
+                    <div class="mt-3">
+                        <a href="{{route("posts.edit", $post->id)}}"><button type="button" class="btn btn-warning">Modifica</button></a>
+                    </div>
                 </div>
             </div>
         </div>
